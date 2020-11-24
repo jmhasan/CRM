@@ -1,0 +1,84 @@
+{%  extends 'accounts/main.html' %}
+{% block content %}
+{% load crispy_forms_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+</head>
+<body>
+
+<header class="site-header">
+</header>
+<main role="main" class="container">
+    <div class="row">
+        <div class="col-md-12">
+                <div class="content-section">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <fieldset class="form-group" >
+                            <legend class="border-bottom mb-4">RI Wise Target Entry</legend>
+                            {{ form | crispy}}
+
+                        </fieldset>
+                        <div class="form-group">
+                            <button class="btn btn-outline-info" type="submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+
+
+
+
+                <table class="table table-sm">
+				<tr>
+					<th>Trn No</th>
+					<th>RI Code</th>
+					<th>AI Code</th>
+					<th>ZI Code</th>
+				</tr>
+
+				 {% for tlist in targetlist %}
+					<tr>
+						<td>{{tlist.xrow}}</td>
+						<td>{{tlist.xriid}}</td>
+						<td>{{tlist.xtsoid}}</td>
+						<td>{{tlist.xziid}}</td>
+					</tr>
+				{% endfor %}
+
+			</table>
+
+
+        </div>
+    </div>
+</main>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<script type="text/javascript">
+    document.getElementById("id_q").value = "{{query}}"
+</script>
+
+</body>
+
+</html>
+
+{% endblock content %}
