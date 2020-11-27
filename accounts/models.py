@@ -1,6 +1,16 @@
 from django.db import models
 
+#SQLAlchemy
 
+from sqlalchemy import create_engine,Table, Column, Integer, String, MetaData, or_
+import urllib
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+engine = create_engine("mssql+pyodbc://:@localhost:1433/azamenterprise?driver=SQL+Server+Native+Client+10.0")
+conn = engine.connect()
+Session = sessionmaker(bind=engine)
+Session = Session()
+Base =declarative_base()
 # Create your models here.
 
 
@@ -70,7 +80,13 @@ class Ritarget(models.Model):
         db_table = 'Ritarget'
 
 
+class Student(Base):
+	__tablename__='Student'
 
+	id = Column(Integer, primary_key=True)
+	name = Column(String(50))
+	age = Column(Integer)
+	grade = Column(String(50))
 
 
 

@@ -57,9 +57,14 @@
 					</tr>
 				{% endfor %}
 
+                 {% for i in Students %}
+					<tr>
+						<td>{{i.name}}</td>
+						<td>{{i.age}}</td>
+					</tr>
+				{% endfor %}
+                    {{maxid}}
 			</table>
-
-
         </div>
     </div>
 </main>

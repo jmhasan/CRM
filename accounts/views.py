@@ -1,11 +1,21 @@
+import sqlalchemy as sqlalchemy
 from django.http import HttpResponse
 from django.shortcuts import render
 
 from .forms import RitargetForm
 from .models import *
 
-
-
+#SQLAlchemy
+from sqlalchemy import select, func
+from sqlalchemy import create_engine,Table, Column, Integer, String, MetaData, or_
+import urllib
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+engine = create_engine("mssql+pyodbc://:@localhost:1433/azamenterprise?driver=SQL+Server+Native+Client+10.0")
+conn = engine.connect()
+Session = sessionmaker(bind=engine)
+Session = Session()
+Base =declarative_base()
 # Create your views here.
 
 
@@ -44,10 +54,16 @@ def customer(request, cusid):
 
 def target(request):
     targetlist = Ritarget.objects.all()
+
+    # Get All Data
+    Students = Session.query(Student)
+    maxqery = Session.query(func.max(Student.id))
+    maxid = maxqery
     form = RitargetForm(request.POST or None)
     if form.is_valid():
         form.save()
-    context = {'form': form, 'targetlist': targetlist}
-
+    context = {'form': form, 'targetlist': targetlist, 'Students':Students, 'maxid':maxid }
     return render(request, 'accounts/target.html', context)
+
+
 
