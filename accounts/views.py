@@ -1,3 +1,4 @@
+import datetime
 import sqlalchemy as sqlalchemy
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -64,6 +65,37 @@ def target(request):
         form.save()
     context = {'form': form, 'targetlist': targetlist, 'Students':Students, 'maxid':maxid }
     return render(request, 'accounts/target.html', context)
+
+
+def advnum(request):
+    # GET Current Date
+    today = datetime.date.today()
+
+    # Format the date like (20-11-28 YY-MM-DD)
+    today_string = today.strftime('%y%m%d')
+
+    # For the very first time invoice_number is YY-MM-DD-001
+    next_invoice_number = '001'
+
+    # Get Last Invoice Number of Current Year, Month and Day (20-11-28 YY-MM-DD)
+    #last_invoice = TestPost.objects.filter(invoice_no__startswith=today_string).order_by('invoice_no').last()
+    last_invoice = '201128001'
+
+    if last_invoice:
+        # Cut 6 digit from the left and converted to int (201128:xxx)
+        #last_invoice_number = int(last_invoice.invoice_no[6:])
+        last_invoice_number = int(24554451)
+
+        # Increment one with last three digit
+        next_invoice_number = '{0:03d}'.format(last_invoice_number + 1)
+
+    # Return custom invoice number
+    #return today_string + next_invoice_number
+    num1 = today_string + next_invoice_number
+    context = {'num1': num1}
+    return render(request, 'accounts/advice.html', context)
+
+
 
 
 
