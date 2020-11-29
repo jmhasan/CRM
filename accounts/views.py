@@ -11,7 +11,7 @@ from sqlalchemy import create_engine,Table, Column, Integer, String, MetaData, o
 import urllib
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-engine = create_engine("mssql+pyodbc://:@localhost:1433/azamenterprise?driver=SQL+Server+Native+Client+10.0")
+engine = create_engine("mssql+pyodbc://:@localhost:1433/VAT?driver=SQL+Server+Native+Client+10.0")
 conn = engine.connect()
 Session = sessionmaker(bind=engine)
 Session = Session()
@@ -58,11 +58,17 @@ def target(request):
     # Get All Data
     Students = Session.query(Student)
     maxqery = Session.query(func.max(Student.id))
-    maxid = maxqery
+    for i in maxqery:
+        print(i)
+
+    maxid = "PCML-"+i[0]+1
+    print(maxid)
+
+    #print(maxqery.name)
     form = RitargetForm(request.POST or None)
     if form.is_valid():
         form.save()
-    context = {'form': form, 'targetlist': targetlist, 'Students':Students, 'maxid':maxid }
+    context = {'form': form, 'targetlist': targetlist, 'Students':Students, 'maxid': maxqery }
     return render(request, 'accounts/target.html', context)
 
 

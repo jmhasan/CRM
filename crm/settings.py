@@ -88,10 +88,10 @@ WSGI_APPLICATION = 'crm.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'sql_server.pyodbc',
-        'NAME': 'CRM',
+        'NAME': 'VAT',
         'USER': '',
         'PASSWORD': '',
-        'HOST': 'JM_HASAN',
+        'HOST': 'HASAN',
         'PORT': '',
 
         'OPTIONS': {

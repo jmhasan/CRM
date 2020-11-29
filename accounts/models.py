@@ -81,12 +81,11 @@ class Ritarget(models.Model):
 
 
 class Student(Base):
-	__tablename__='Student'
-
-	id = Column(Integer, primary_key=True)
-	name = Column(String(50))
-	age = Column(Integer)
-	grade = Column(String(50))
+    __tablename__='Student'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50))
+    age = Column(Integer)
+    grade = Column(String(50))
 
 
 
