@@ -8,4 +8,5 @@ urlpatterns = [
     path('customer/<str:cusid>/', views.customer, name="customerid"),
     path('customer/', views.customer, name="customer"),
     path('target/', views.target, name="target"),
+    path('advnum/', views.advnum, name="advnum"),
 ]
