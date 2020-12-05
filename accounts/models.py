@@ -1,18 +1,19 @@
 from django.db import models
 
-#SQLAlchemy
-from django.forms import ModelForm
-
+# SQLAlchemy
+from sqlalchemy.orm import *
 from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, or_
 import urllib
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+
 engine = create_engine("mssql+pyodbc://:@localhost:1433/azamenterprise?driver=SQL+Server+Native+Client+10.0")
 conn = engine.connect()
 Session = sessionmaker(bind=engine)
 Session = Session()
-Base =declarative_base()
-metadata = MetaData()
+Base = declarative_base()
+
+
 # Create your models here.
 
 
@@ -60,6 +61,7 @@ class Order(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=200, null=True, choices=STATUS)
 
+
 class Ritarget(models.Model):
     ztime = models.DateTimeField(blank=True, null=True)
     zutime = models.DateTimeField(blank=True, null=True)
@@ -83,13 +85,18 @@ class Ritarget(models.Model):
 
 
 class Student(Base):
-    __tablename__='Student'
+    __tablename__ = 'Student'
+
     id = Column(Integer, primary_key=True)
-    name = Column(String(50), primary_key=True)
+    name = Column(String(50))
     age = Column(Integer)
     grade = Column(String(50))
 
 
-
-
+class Matching(Base):
+    __tablename__ = 'Matching'
+    matchnum = Column(String, primary_key=True)
+    xrow = Column(String(50), primary_key=True)
+    xcus = Column(String(50))
+    xdornum = Column(String(50))
 
