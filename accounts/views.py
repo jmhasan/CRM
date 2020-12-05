@@ -1,9 +1,10 @@
 import datetime
 import sqlalchemy as sqlalchemy
+from django.contrib.auth.models import User
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
-from .forms import RitargetForm
+from .forms import RitargetForm, MatchingForm
 from .models import *
 
 #SQLAlchemy
@@ -92,10 +93,10 @@ def advnum(request):
     # Return custom invoice number
     #return today_string + next_invoice_number
     num1 = today_string + next_invoice_number
-    context = {'num1': num1}
+
+    form = MatchingForm(request.POST or None)
+    context = {'num1': num1, 'form': form}
     return render(request, 'accounts/advice.html', context)
-
-
 
 
 
