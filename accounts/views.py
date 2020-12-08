@@ -1,4 +1,5 @@
 import datetime
+
 import sqlalchemy as sqlalchemy
 from django.contrib.auth.models import User
 from django.http import HttpResponse
@@ -13,6 +14,8 @@ from sqlalchemy import create_engine,Table, Column, Integer, String, MetaData, o
 import urllib
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+
+
 engine = create_engine("mssql+pyodbc://:@localhost:1433/azamenterprise?driver=SQL+Server+Native+Client+10.0")
 conn = engine.connect()
 Session = sessionmaker(bind=engine)
@@ -97,6 +100,9 @@ def advnum(request):
     form = MatchingForm(request.POST or None)
     context = {'num1': num1, 'form': form}
     return render(request, 'accounts/advice.html', context)
+
+
+
 
 
 
