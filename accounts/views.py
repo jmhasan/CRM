@@ -58,8 +58,7 @@ def customer(request, cusid):
 
 
 def target(request):
-    targetlist = Ritarget.objects.all()
-
+    targetlist = Ritarget.objects.all().order_by('xrow').reverse()[:5]
     # Get All Data
     Students = Session.query(Student)
     maxqery = Session.query(func.max(Student.id))
@@ -67,7 +66,7 @@ def target(request):
     form = RitargetForm(request.POST or None)
     if form.is_valid():
         form.save()
-    context = {'form': form, 'targetlist': targetlist, 'Students':Students, 'maxid':maxid }
+    context = {'form': form, 'targetlist': targetlist, 'Students': Students, 'maxid': maxid }
     return render(request, 'accounts/target.html', context)
 
 
