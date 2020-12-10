@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'crispy_forms',
+    'rest_framework',
+    'rest_witchcraft',
 ]
 
 MIDDLEWARE = [
@@ -91,7 +93,7 @@ DATABASES = {
         'NAME': 'VAT',
         'USER': '',
         'PASSWORD': '',
-        'HOST': 'HASAN',
+        'HOST': 'Hasan',
         'PORT': '',
 
         'OPTIONS': {

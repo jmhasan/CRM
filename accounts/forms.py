@@ -15,9 +15,10 @@ class RitargetForm(forms.ModelForm):
         # Model I want to interact
         model = Ritarget
         # Filed i want to show according to serial
-        fields = ['xrow','xriid','xtsoid', 'xziid']
+        fields = ['xrow','xriid','xtsoid', 'xziid','xqty']
         labels = {
-            'xrow': 'ID','xriid': 'RI Code','xtsoid':'AI Code' , 'xziid': 'ZI Code'
+            'xrow': 'ID','xriid': 'RI Code','xtsoid':'AI Code' , 'xziid': 'ZI Code',
+            'xqty' : 'Target Qty'
         }
 
 

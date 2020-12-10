@@ -7,7 +7,7 @@ import urllib
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-engine = create_engine("mssql+pyodbc://:@localhost:1433/azamenterprise?driver=SQL+Server+Native+Client+10.0")
+engine = create_engine("mssql+pyodbc://:@localhost:1433/VAT?driver=SQL+Server+Native+Client+10.0")
 conn = engine.connect()
 Session = sessionmaker(bind=engine)
 Session = Session()
@@ -99,4 +99,3 @@ class Matching(Base):
     xrow = Column(String(50), primary_key=True)
     xcus = Column(String(50))
     xdornum = Column(String(50))
-
