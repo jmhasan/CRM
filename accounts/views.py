@@ -2,9 +2,9 @@ import datetime
 
 import sqlalchemy as sqlalchemy
 from django.contrib.auth.models import User
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
-
+from django.contrib import messages
 from .forms import RitargetForm, MatchingForm
 from .models import *
 
@@ -66,8 +66,11 @@ def target(request):
     form = RitargetForm(request.POST or None)
     if form.is_valid():
         form.save()
+        messages.success(request, 'Successfully Add.')
+        return HttpResponseRedirect('')
     context = {'form': form, 'targetlist': targetlist, 'Students': Students, 'maxid': maxid }
     return render(request, 'accounts/target.html', context)
+
 
 
 def advnum(request):
@@ -75,26 +78,28 @@ def advnum(request):
     today = datetime.date.today()
 
     # Format the date like (20-11-28 YY-MM-DD)
-    today_string = today.strftime('%y%m%d')
+    today_string = today.strftime('PCMLRI-'+'%y%m'+'-')
 
     # For the very first time invoice_number is YY-MM-DD-001
-    next_invoice_number = '001'
+    next_invoice_number = '000001'
 
     # Get Last Invoice Number of Current Year, Month and Day (20-11-28 YY-MM-DD)
-    #last_invoice = TestPost.objects.filter(invoice_no__startswith=today_string).order_by('invoice_no').last()
-    last_invoice = '201128001'
+    last_invoice = Ritarget.objects.filter(xrow__startswith=today_string).order_by('xrow').last()
+    #last_invoice = '201128001'
+    print (last_invoice)
 
     if last_invoice:
         # Cut 6 digit from the left and converted to int (201128:xxx)
-        #last_invoice_number = int(last_invoice.invoice_no[6:])
-        last_invoice_number = int(24554451)
-
+        last_invoice_number = int(last_invoice.xrow[12:])
+        #last_invoice_number = int(24554451)
+        print (last_invoice_number)
         # Increment one with last three digit
-        next_invoice_number = '{0:03d}'.format(last_invoice_number + 1)
-
+        #next_invoice_number = last_invoice_number+1
+        next_invoice_number = '{0:06d}'.format(last_invoice_number + 1)
+        final = str(next_invoice_number)
     # Return custom invoice number
     #return today_string + next_invoice_number
-    num1 = today_string + next_invoice_number
+    num1 = today_string + final
 
     form = MatchingForm(request.POST or None)
     context = {'num1': num1, 'form': form}
