@@ -1,15 +1,15 @@
 import datetime
+
 from django.db import models
 
 # SQLAlchemy
-from django.shortcuts import render
 from sqlalchemy.orm import *
 from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, or_
 import urllib
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-engine = create_engine("mssql+pyodbc://:@localhost:1433/VAT?driver=SQL+Server+Native+Client+10.0")
+engine = create_engine("mssql+pyodbc://:@localhost:1433/azamenterprise?driver=SQL+Server+Native+Client+10.0")
 conn = engine.connect()
 Session = sessionmaker(bind=engine)
 Session = Session()
@@ -63,36 +63,32 @@ class Order(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=200, null=True, choices=STATUS)
 
-
 def advnum():
     # GET Current Date
     today = datetime.date.today()
-
     # Format the date like (20-11-28 YY-MM-DD)
-    today_string = today.strftime('%y%m')
-    # For the very first time invoice_number is YY-MM-DD-001
-    next_invoice_number = '000001'
+    today_string = today.strftime('PCMLRI-'+'%y%m'+'-')
+
     # Get Last Invoice Number of Current Year, Month and Day (20-11-28 YY-MM-DD)
     last_invoice = Ritarget.objects.filter(xrow__startswith=today_string).order_by('xrow').last()
-    # last_invoice = '201128001'
     if last_invoice:
         # Cut 6 digit from the left and converted to int (201128:xxx)
-        last_invoice_number = int(last_invoice.xrow[6:])
-        # last_invoice_number = int(24554451)
-
+        last_invoice_number = int(last_invoice.xrow[12:])
+        #last_invoice_number = int(24554451)
+        print (last_invoice_number)
         # Increment one with last three digit
         next_invoice_number = '{0:06d}'.format(last_invoice_number + 1)
-
+        final = str(next_invoice_number)
     # Return custom invoice number
-    return today_string + next_invoice_number
-
+    #return today_string + next_invoice_number
+    return  today_string + final
 
 class Ritarget(models.Model):
     ztime = models.DateTimeField(blank=True, null=True)
     zutime = models.DateTimeField(blank=True, null=True)
     zid = models.IntegerField(blank=True, null=True)
     xdate = models.DateField(blank=True, null=True)
-    xrow = models.IntegerField(primary_key=True, default=advnum, )
+    xrow = models.CharField(primary_key=True,max_length=100)
     xziid = models.CharField(max_length=50, blank=True, null=True)
     xtsoid = models.CharField(max_length=50, blank=True, null=True)
     xriid = models.CharField(max_length=50, blank=True, null=True)
@@ -107,6 +103,17 @@ class Ritarget(models.Model):
     class Meta:
         managed = False
         db_table = 'Ritarget'
+
+
+class Prmst(models.Model):
+    xemp = models.CharField(primary_key=True, max_length=100)
+    xname = models.CharField(max_length=200)
+
+    class Meta:
+        managed = False
+        db_table = 'prmst'
+
+
 
 
 class Student(Base):
@@ -124,3 +131,4 @@ class Matching(Base):
     xrow = Column(String(50), primary_key=True)
     xcus = Column(String(50))
     xdornum = Column(String(50))
+

@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'accounts',
     'crispy_forms',
     'rest_framework',
-    'rest_witchcraft',
 ]
 
 MIDDLEWARE = [
@@ -90,10 +89,10 @@ WSGI_APPLICATION = 'crm.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'sql_server.pyodbc',
-        'NAME': 'VAT',
+        'NAME': 'CRM',
         'USER': '',
         'PASSWORD': '',
-        'HOST': 'Hasan',
+        'HOST': 'JM_HASAN',
         'PORT': '',
 
         'OPTIONS': {
