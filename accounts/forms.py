@@ -17,9 +17,15 @@ class RitargetForm(forms.ModelForm):
         # Filed i want to show according to serial
         fields = ['xrow','xriid','xtsoid', 'xziid','xqty']
         labels = {
-            'xrow': 'ID','xriid': 'RI Code','xtsoid':'AI Code' , 'xziid': 'ZI Code',
+            'xrow': 'Transaction No', 'xriid': 'RI Code', 'xtsoid':'AI Code' , 'xziid': 'ZI Code',
             'xqty' : 'Target Qty'
         }
+        widgets = {
+            'xrow': forms.TextInput(attrs={'readonly': 'readonly'}),
+        }
+
+
+
 
 
 class MatchingForm(Form):

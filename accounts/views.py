@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from rest_framework import generics
-
+from django.core.paginator import Paginator
 from .forms import RitargetForm, MatchingForm
 from .models import *
 
@@ -60,7 +60,14 @@ def customer(request, cusid):
 
 
 def target(request):
-    targetlist = Ritarget.objects.all()
+    targetlist = Ritarget.objects.all().order_by('xrow').reverse()[:5]
+
+    #pagination funciton for RI target list
+    """contact_list = Ritarget.objects.all()
+    paginator = Ritarget(contact_list, 25)  # Show 25 contacts per page.
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)"""
 
     # Get All Data
     Students = Session.query(Student)
@@ -74,33 +81,8 @@ def target(request):
 
 
 def advnum(request):
-    # GET Current Date
-    today = datetime.date.today()
-
-    # Format the date like (20-11-28 YY-MM-DD)
-    today_string = today.strftime('%y%m%d')
-
-    # For the very first time invoice_number is YY-MM-DD-001
-    next_invoice_number = '001'
-
-    # Get Last Invoice Number of Current Year, Month and Day (20-11-28 YY-MM-DD)
-    # last_invoice = TestPost.objects.filter(invoice_no__startswith=today_string).order_by('invoice_no').last()
-    last_invoice = '201128001'
-
-    if last_invoice:
-        # Cut 6 digit from the left and converted to int (201128:xxx)
-        # last_invoice_number = int(last_invoice.invoice_no[6:])
-        last_invoice_number = int(24554451)
-
-        # Increment one with last three digit
-        next_invoice_number = '{0:03d}'.format(last_invoice_number + 1)
-
-    # Return custom invoice number
-    # return today_string + next_invoice_number
-    num1 = today_string + next_invoice_number
-
     form = MatchingForm(request.POST or None)
-    context = {'num1': num1, 'form': form}
+    context = {'form': form}
     return render(request, 'accounts/advice.html', context)
 
 
@@ -115,3 +97,5 @@ class MatchingSerializerView(generics.CreateAPIView):
     queryset = Session.query(Matching)
     # queryset = Student.objects.all()
     serializer_class = MatchingSerializerNew
+
+

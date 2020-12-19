@@ -1,6 +1,8 @@
+import datetime
 from django.db import models
 
 # SQLAlchemy
+from django.shortcuts import render
 from sqlalchemy.orm import *
 from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, or_
 import urllib
@@ -62,12 +64,35 @@ class Order(models.Model):
     status = models.CharField(max_length=200, null=True, choices=STATUS)
 
 
+def advnum():
+    # GET Current Date
+    today = datetime.date.today()
+
+    # Format the date like (20-11-28 YY-MM-DD)
+    today_string = today.strftime('%y%m')
+    # For the very first time invoice_number is YY-MM-DD-001
+    next_invoice_number = '000001'
+    # Get Last Invoice Number of Current Year, Month and Day (20-11-28 YY-MM-DD)
+    last_invoice = Ritarget.objects.filter(xrow__startswith=today_string).order_by('xrow').last()
+    # last_invoice = '201128001'
+    if last_invoice:
+        # Cut 6 digit from the left and converted to int (201128:xxx)
+        last_invoice_number = int(last_invoice.xrow[6:])
+        # last_invoice_number = int(24554451)
+
+        # Increment one with last three digit
+        next_invoice_number = '{0:06d}'.format(last_invoice_number + 1)
+
+    # Return custom invoice number
+    return today_string + next_invoice_number
+
+
 class Ritarget(models.Model):
     ztime = models.DateTimeField(blank=True, null=True)
     zutime = models.DateTimeField(blank=True, null=True)
     zid = models.IntegerField(blank=True, null=True)
     xdate = models.DateField(blank=True, null=True)
-    xrow = models.IntegerField(primary_key=True)
+    xrow = models.IntegerField(primary_key=True, default=advnum, )
     xziid = models.CharField(max_length=50, blank=True, null=True)
     xtsoid = models.CharField(max_length=50, blank=True, null=True)
     xriid = models.CharField(max_length=50, blank=True, null=True)
