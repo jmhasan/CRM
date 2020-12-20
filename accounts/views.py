@@ -60,15 +60,15 @@ def customer(request, cusid):
 def target(request):
     targetlist = Ritarget.objects.all().order_by('xrow').reverse()[:5]
     # Get All Data
-    Students = Session.query(Student)
+    """Students = Session.query(Student)
     maxqery = Session.query(func.max(Student.id))
-    maxid = maxqery
+    maxid = maxqery"""
     form = RitargetForm(request.POST or None)
     if form.is_valid():
         form.save()
         messages.success(request, 'Successfully Add.')
-        return HttpResponseRedirect('')
-    context = {'form': form, 'targetlist': targetlist, 'Students': Students, 'maxid': maxid }
+        return redirect('target')
+    context = {'form': form, 'targetlist': targetlist }
     return render(request, 'accounts/target.html', context)
 
 
